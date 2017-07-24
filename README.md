@@ -49,6 +49,7 @@ If you get an error after 6 (gameboard not found):
 # Feedback
 There may be some bugs left that I overlooked, if you notice anything weird while the bot is running let me know by making an issue (https://github.com/tsuntsuntsuntsun/Pokerbot/issues).
 
-# Donation
+# Donations
 For people feeling generous, you can donate here
+
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N6YUUYVD4A32Y)
