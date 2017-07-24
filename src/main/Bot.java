@@ -84,6 +84,8 @@ public class Bot implements Runnable {
         long current = System.currentTimeMillis();
         long end = current + minutes*60*1000;
 
+        //random delay in ms between actions
+        int delay;
 
         System.out.println("############STARTING BOT");
 
@@ -103,7 +105,8 @@ public class Bot implements Runnable {
           handle(newStage);
 
           //waitTime in ms
-          Thread.sleep(waitTime);
+          delay = rand.nextInt(500);
+          Thread.sleep(waitTime+delay);
           current = System.currentTimeMillis();
         }
 
@@ -507,15 +510,15 @@ public class Bot implements Runnable {
   //move mouse to location x,y and click
   //location and speed slightly randomized
   public void click(int x, int y) throws AWTException {
-    x+=rand.nextInt(20)-10;
-    y+=rand.nextInt(20)-10;
+    x+=rand.nextInt(40)-20;
+    y+=rand.nextInt(40)-20;
 
     PointerInfo a = MouseInfo.getPointerInfo();
     Point b = a.getLocation();
     int mx = (int) b.getX();
     int my = (int) b.getY();
 
-    double t = 150+rand.nextInt(150);
+    double t = 250+rand.nextInt(250);
     double n = 50;
     double dx = (x - mx) / n;
     double dy = (y - my) / n;
