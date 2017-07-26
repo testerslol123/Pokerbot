@@ -72,6 +72,7 @@ public class Bot implements Runnable {
   public void run() {
     try {
       init();
+
       if (start != null) {
         //found game board
         System.out.println("############GAMEBOARD FOUND");
@@ -281,9 +282,16 @@ public class Bot implements Runnable {
       //take ss
       currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
       //find base pic in screenshot
+      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
+
       start = findMatches(currentSS, gameboard, 30, 50);
+
       if (start == null) {
         System.out.println("############GAMEBOARD NOT FOUND");
+      }
+      else {
+        //adjust to old values
+        start.setY(start.getY()-196);
       }
     }
 
