@@ -34,16 +34,26 @@ Simply run compile.bat to compile the jar (requires jdk installed).
 2. Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/)
 3. In the cmd window that pops up, type in how long you want the bot to run (minutes) and press enter
 4. Open your game in chrome and start a poker game
-5. Make sure that the whole gameboard is visible (scroll all the way up and resize window if necessary)
+5. Now you need to make sure that the gameboard is visible.
+If your screen is big enough just do it like this (expand your browser so the whole board is visible).
 
 ![Step 5 setup](/src/img/readme/step5.jpg)
 
-6. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
-7. The bot will start working and will stop after the amount of minutes in step 3. (If you want to stop it earlier just close the cmd window)
+For people who have small screens, you can make your browser a bit smaller:
 
-If you get an error after 6 (gameboard not found):
+![Step 5 setup small](/src/img/readme/step5new.jpg)
+
+This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x10" line and the buttons on the bottom of the gameboard fully visible). If you show any less than this the bot will not work.
+
+![Step 5 setup minimum](/src/img/readme/step5minimum.jpg)
+
+6. Place your browser window as close to the top left of the screen as you can (this makes the next step faster)
+7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
+8. The bot will start working and will stop after the amount of minutes in step 3. (If you want to stop it earlier just close the cmd window)
+
+If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 * Make sure your ingame settings are correct and you saved changes.
-* Make sure you can see the whole gameboard as shown on the picture of step 5. Also don't cover the gameboard with your mouse.
+* Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
 * Press enter again to restart the process on the cmd window.
 
 # Feedback
