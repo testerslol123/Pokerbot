@@ -1,0 +1,32 @@
+# Setting for the Pokerbot, for more details on each setting read the readme.md file 
+# or go to https://github.com/tsuntsuntsuntsun/Pokerbot and scroll down to the "settings" segment
+
+####### RUNTIME
+### Bot runtime in minutes
+runtime=60
+
+
+####### Settings during higher-lower
+
+### After winning this round, the bot will play safe 
+### (0 = always play safe, 10 = never play safe)
+safeRound=7
+
+### Bound used to determine if it is safe to continue
+### (0 = always continue , 6 = never continue)
+HLBound=2
+
+
+####### ADVANCED SETTINGS
+### WARNING: changing these settings may cause the bot to not work properly
+
+### Delay between actions in ms (miliseconds):
+
+### Delay outside of Higher-lower, increase by ~500ms if your game is constantly lagging
+delayNormal=3000
+
+### Delay during Higher-lower is a bit shorter, set this to delayNormal-500
+delayHL=2500
+
+### How long it takes to move the cursor from one point to another in ms
+clickDelay=200

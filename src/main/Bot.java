@@ -12,15 +12,79 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 public class Bot implements Runnable {
 
-  //iterations
-  private int minutes;
-  private int waitTime;
-  private int safeTurns;
+  //settings
+  private int runtime;
+  private int safeRound;
+  private int HLBound;
+  private int clickDelay;
+  private int delayNormal;
+  private int delayHL;
+
+
+  public Bot(Properties properties) {
+
+    System.out.println("############READING SETTINGS");
+    //runtime
+    runtime = checkProperty(properties, "runtime", 60);
+    if (runtime < 0) {
+      runtime = 60;
+    }
+    System.out.println("runtime="+runtime);
+
+    //delayNormal
+    delayNormal = checkProperty(properties, "delayNormal", 3000);
+    if(delayNormal<0){
+      delayNormal=3000;
+    }
+    if(delayNormal<3000){
+      System.out.println("WARNING: delayNormal below 3000ms may cause the bot to desync");
+    }
+    System.out.println("delayNormal="+delayNormal);
+
+    //delayHL
+    delayHL = checkProperty(properties, "delayHL", 2500);
+    if(delayHL<0){
+      delayHL=2500;
+    }
+    if(delayHL<2500){
+      System.out.println("WARNING: delayHL below 2500ms may cause the bot to desync");
+    }
+    System.out.println("delayHL="+delayHL);
+
+    //clickDelay
+    clickDelay = checkProperty(properties, "clickDelay", 200);
+    if(clickDelay<0){
+      clickDelay=200;
+    }
+    if(clickDelay<150){
+      System.out.println("WARNING: clickDelay below 150ms causes the bot to act too quickly, possibly flagging you for making too many actions. Not recommended");
+    }
+    System.out.println("clickDelay="+clickDelay);
+
+    safeRound = checkProperty(properties, "safeRound", 7);
+    System.out.println("safeRound="+safeRound);
+
+    HLBound = checkProperty(properties, "HLBound", 2);
+    System.out.println("HLBound="+HLBound);
+  }
+
+  public int checkProperty(Properties properties, String name, int def) {
+    int result;
+    try {
+      result = Integer.parseInt(properties.getProperty(name));
+    } catch (NumberFormatException e) {
+      System.out.println("Could not parse " + name + ", using default value");
+      result = def;
+    }
+    return result;
+  }
 
   //screenshot being used in current iteration
   private BufferedImage currentSS;
@@ -44,6 +108,7 @@ public class Bot implements Runnable {
   private Random rand = new Random();
 
   //STAGE
+  private int actionDelay;
   private boolean choosing;
   private Stage newStage;
   private Loc centerButton;
@@ -58,16 +123,9 @@ public class Bot implements Runnable {
   private int currentRound = 0;
   private int currentCard = -1;
   private int nextCard = -1;
+  private int higherThan8 = 0;
+  private int lowerThan8 = 0;
 
-  public Bot(int minutes, int safeTurns, int waitTime) {
-    this.minutes = minutes;
-    this.safeTurns=safeTurns;
-    this.waitTime=waitTime;
-  }
-
-  public void test() throws AWTException {
-
-  }
 
   public void run() {
     try {
@@ -83,15 +141,16 @@ public class Bot implements Runnable {
         choosing = true;
 
         long current = System.currentTimeMillis();
-        long end = current + minutes*60*1000;
+        long end = current + runtime * 60 * 1000;
 
         //random delay in ms between actions
         int delay;
+        actionDelay=delayNormal;
 
         System.out.println("############STARTING BOT");
 
         //main loop
-        while (current<end){
+        while (current < end) {
           //take screenshot
           currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 
@@ -105,9 +164,9 @@ public class Bot implements Runnable {
           System.out.println("FOUND STAGE:" + newStage);
           handle(newStage);
 
-          //waitTime in ms
+          //actionDelay in ms
           delay = rand.nextInt(500);
-          Thread.sleep(waitTime+delay);
+          Thread.sleep(actionDelay + delay);
           current = System.currentTimeMillis();
         }
 
@@ -121,7 +180,7 @@ public class Bot implements Runnable {
   }
 
   //handle current stage, usually 1 click
-  private void handle(Stage stage) throws AWTException, InterruptedException {
+  private void handle(Stage stage) throws AWTException, InterruptedException, IOException {
     switch (stage) {
       case SELECT:
         otherRepeat = 0;
@@ -132,12 +191,13 @@ public class Bot implements Runnable {
 
       case WIN:
         otherRepeat = 0;
-        click(rightButton);
+        //reset values in case of desync
         currentCard = -1;
         nextCard = -1;
-        currentRound = 0;
+        currentRound = 1;
         choosing = false;
-        waitTime=2500;
+        actionDelay = delayHL;
+        click(rightButton);
         break;
 
       case LOSE:
@@ -155,9 +215,19 @@ public class Bot implements Runnable {
           click(rightButton);
         } else if (currentCard < 8) {
           click(leftButton);
-        } else {
-          //TODO better 8 handling
+        } else if (currentCard >8){
           click(rightButton);
+        } else{
+          //handling 8
+          //look at the amount of cards that were lower/higher than 8 during this game
+          if(higherThan8>lowerThan8){
+            //click "lower" if there were less cards lower than 8 throughout this game
+            click(rightButton);
+          }
+          else{
+            //click higher otherwise
+            click(leftButton);
+          }
         }
         break;
 
@@ -167,22 +237,28 @@ public class Bot implements Runnable {
         System.out.println("CURRENT ROUND=" + currentRound);
         identifyValueHL(false);
         System.out.println("NEXT CARD=" + nextCard);
-        if (currentRound < 7) {
-          //always keep playing if low round
+
+        if(currentCard>8){
+          higherThan8++;
+        }
+        else if (currentCard<8){
+          lowerThan8++;
+        }
+
+        if (currentRound <= safeRound) {
+          //always keep playing during unsafe rounds
           currentCard = nextCard;
           click(rightButton);
         } else {
+          //during safe round check if card is within bound
           int diff = valueDiff(nextCard);
-          if (diff > 2) {
+          if (diff > HLBound) {
             //continure if high diff
             currentCard = nextCard;
             click(rightButton);
           } else {
             //stop if low diff
-            choosing = true;
-            currentCard = -1;
-            nextCard = -1;
-            currentRound = 0;
+            endHL();
             click(leftButton);
           }
         }
@@ -190,12 +266,9 @@ public class Bot implements Runnable {
 
       case LOSEHL:
         otherRepeat = 0;
-        choosing = true;
-        currentCard = -1;
-        nextCard = -1;
-        currentRound = 0;
+        endHL();
         click(centerButton);
-        waitTime=3000;
+        actionDelay = delayNormal;
         break;
 
       case DEAL:
@@ -204,26 +277,48 @@ public class Bot implements Runnable {
 
       case OTHER:
         otherRepeat++;
-        if (otherRepeat > 3) {
+        if (otherRepeat > 3 && otherRepeat < 10) {
           choosing = !choosing;
-          otherRepeat = 0;
-          click(centerButton);
+          //otherRepeat = 0;
+          //click(centerButton);
         }
-        waitTime=3000;
+        if (otherRepeat >= 10) {
+          System.out.println("ERROR: the bot is unable to identify the current stage");
+          System.out.println("Possible causes:");
+          System.out.println("- Browser was moved");
+          System.out.println("- Captcha popped up");
+          System.out.println();
+          System.out.println("Press enter to resume the bot");
+          System.in.read();
+          otherRepeat = 0;
+        }
+
+        actionDelay = delayNormal;
         break;
     }
   }
 
+  //called after quitting HL to reset values
+  private void endHL() {
+    choosing = true;
+    currentCard = -1;
+    nextCard = -1;
+    currentRound = 1;
+    lowerThan8=0;
+    higherThan8=0;
+    actionDelay = delayNormal;
+  }
+
   private int otherRepeat = 0;
 
-  private void init() throws AWTException, IOException {
+  private void init() throws AWTException, IOException, InterruptedException {
     System.out.println("############LOADING ASSETS");
     BufferedImage gameboard = null;
 
     //load base picture and icons
     try {
       gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
-      System.out.println("LOADING CARD SUIT ICONS");
+     // System.out.println("LOADING CARD SUIT ICONS");
       //regular icons
       BufferedImage spadesIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/spadeIcon.png"));
       BufferedImage clubsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/clubIcon.png"));
@@ -240,7 +335,7 @@ public class Bot implements Runnable {
       blackIcons = new BufferedImage[]{spadesIcon, clubsIcon, spadesLetterIcon, clubsLetterIcon};
       redIcons = new BufferedImage[]{heartsIcon, diamondsIcon, heartsLetterIcon, diamondsLetterIcon};
 
-      System.out.println("LOADING CARD VALUE ICONS");
+    //  System.out.println("LOADING CARD VALUE ICONS");
       //load small number images
       for (int i = 1; i < 11; i++) {
         numberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/number/" + i + "b.png"));
@@ -254,8 +349,7 @@ public class Bot implements Runnable {
         bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/bigNumber/" + i + ".png"));
       }
 
-
-      System.out.println("LOADING STAGE ICONS");
+   //   System.out.println("LOADING STAGE ICONS");
       //stage icons
       BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/dealIcon.png"));
       BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/selectIcon.png"));
@@ -265,33 +359,39 @@ public class Bot implements Runnable {
       BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/winHLIcon.png"));
       BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/loseHLIcon.png"));
 
-
       stageIcons1 = new BufferedImage[]{selectIcon, winIcon, loseIcon, dealIcon};
       stageIcons2 = new BufferedImage[]{selectHLIcon, winHLIcon, loseHLIcon};
       System.out.println("############FINISHED LOADING");
 
     } catch (IOException e) {
-      System.out.println(e);
+      System.out.println("############ERROR WHILE LOADING ASSETS");
     }
 
-    while(start==null){
+    System.out.println();
+    System.out.println("The bot is set to run for "+runtime+" MINUTES");
+    System.out.println("This can be changed in the settings.txt file");
+    Scanner scanner = new Scanner(System.in);
+    while (start == null) {
+      Thread.sleep(1000);
       System.out.println();
-      System.out.println("Make sure the poker gameboard is fully visible and the game resolution is set to \"Lite\" , then press ENTER");
-      System.in.read();
+      System.out.println("-Make sure the poker gameboard is fully visible and the game resolution is set to \"Lite\"");
+      System.out.println("-Position your browser as close as you can to the top left corner of your screen");
+      System.out.println();
+      System.out.println("Press ENTER to start searching for the gameboard (may take 1 or 2 mins)");
+      scanner.nextLine();
       System.out.println("############SEARCHING GAMEBOARD");
       //take ss
       currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
       //find base pic in screenshot
       gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
 
-      start = findMatches(currentSS, gameboard, 30, 50);
+      start = findMatches(currentSS, gameboard, 10, 50);
 
       if (start == null) {
         System.out.println("############GAMEBOARD NOT FOUND");
-      }
-      else {
+      } else {
         //adjust to old values
-        start.setY(start.getY()-196);
+        start.setY(start.getY() - 196);
       }
     }
 
@@ -518,19 +618,19 @@ public class Bot implements Runnable {
   //move mouse to location x,y and click
   //location and speed slightly randomized
   public void click(int x, int y) throws AWTException {
-    x+=rand.nextInt(40)-20;
-    y+=rand.nextInt(40)-20;
+    x += rand.nextInt(40) - 20;
+    y += rand.nextInt(40) - 20;
 
     PointerInfo a = MouseInfo.getPointerInfo();
     Point b = a.getLocation();
     int mx = (int) b.getX();
     int my = (int) b.getY();
 
-    double t = 250+rand.nextInt(250);
+    double t = clickDelay + rand.nextInt(250);
     double n = 50;
     double dx = (x - mx) / n;
     double dy = (y - my) / n;
-    double dt = t /  n;
+    double dt = t / n;
 
     try {
       Robot bot = new Robot();

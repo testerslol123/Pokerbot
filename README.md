@@ -32,7 +32,7 @@ Simply run compile.bat to compile the jar (requires jdk installed).
 ### Starting the bot
 1. Download the zipfile and extract it
 2. Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/)
-3. In the cmd window that pops up, type in how long you want the bot to run (minutes) and press enter
+3. In the cmd window that pops up, type in how long you want the bot to run (runtime) and press enter
 4. Open your game in chrome and start a poker game
 5. Now you need to make sure that the gameboard is visible.
 If your screen is big enough just do it like this (expand your browser so the whole board is visible).
@@ -49,7 +49,7 @@ This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x1
 
 6. Place your browser window as close to the top left of the screen as you can (this makes the next step faster)
 7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
-8. The bot will start working and will stop after the amount of minutes in step 3. (If you want to stop it earlier just close the cmd window)
+8. The bot will start working and will stop after the amount of runtime in step 3. (If you want to stop it earlier just close the cmd window)
 
 If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 * Make sure your ingame settings are correct and you saved changes.
