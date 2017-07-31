@@ -31,9 +31,6 @@ public class Main {
           properties = new Properties();
           //load a properties
           properties.load(input);
-
-          //todo control settings
-
         }
       } catch (IOException ex) {
         System.out.println("Error while reading file");
