@@ -14,7 +14,7 @@ safeRound=7
 
 ### Bound used to determine if it is safe to continue
 ### (0 = always continue , 6 = never continue)
-HLBound=2
+HLBound=1
 
 
 ####### ADVANCED SETTINGS
