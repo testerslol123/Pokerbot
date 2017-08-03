@@ -8,11 +8,11 @@ During testing I ran the bot for 15 hours straight, earning about 3.4M coins an 
 
 It should run fine on any pc (need some feedback on this), on my 6 year old i5 2500k with only browser+bot running my cpu usage sits at 5-10%.
 
-[Compile](#1.-compile) <br />
-[Ingame settings](#ingame-settings) <br />
-[Bot settings](#bot-settings) <br />
-[Starting the bot](#starting-the-bot) <br />
-[Feedback](#feedback) <br />
+[1. Compile](#1-compile) <br />
+[2. Ingame settings](#2-ingame-settings) <br />
+[3. Bot settings](#3-bot-settings) <br />
+[4. Starting the bot](#4-starting-the-bot) <br />
+[5. Feedback](#5-feedback) <br />
  
 
 
@@ -21,7 +21,7 @@ It should run fine on any pc (need some feedback on this), on my 6 year old i5 2
 
 Simply run compile.bat to compile the jar (requires jdk installed).
 
-# Ingame settings 
+# 2. Ingame settings 
 ## you MUST do this or the bot won't work at all
 1. Go to settings
 2. click on "Animation/Resolution settings"
@@ -38,7 +38,7 @@ Simply run compile.bat to compile the jar (requires jdk installed).
 ![Step 4 settings](/src/img/readme/settings4.jpg)
 
 
-# Bot settings
+# 3. Bot settings
 To change the bot settings, open the "settings.txt" file and change the values as needed.
 Here is an overview of the settings you can change. I recommend leaving everything as is and simply changing the runtime.
 
@@ -111,7 +111,7 @@ These are the current available sounds:
 
 You can test this out by blocking the gameboard for a few seconds while the bot is running.
 
-# Starting the bot
+# 4. Starting the bot
 1. Download the zipfile and extract it
 2. Adjust settings as needed (see: Bot settings)
 3. 
@@ -144,10 +144,9 @@ If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 * Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
 * Press enter again to restart the process on the cmd window.
 
-# Feedback
+# 5. Feedback
 There may be some bugs left that I overlooked, if you notice anything weird while the bot is running let me know by making an issue (https://github.com/tsuntsuntsuntsun/Pokerbot/issues).
 
-# Donations
 For people feeling generous, you can donate here
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N6YUUYVD4A32Y)
