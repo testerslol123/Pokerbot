@@ -8,13 +8,21 @@ During testing I ran the bot for 15 hours straight, earning about 3.4M coins an 
 
 It should run fine on any pc (need some feedback on this), on my 6 year old i5 2500k with only browser+bot running my cpu usage sits at 5-10%.
 
+[Compile](#1.-compile) <br />
+[Ingame settings](#ingame-settings) <br />
+[Bot settings](#bot-settings) <br />
+[Starting the bot](#starting-the-bot) <br />
+[Feedback](#feedback) <br />
+ 
 
-# Compile
+
+# 1. Compile
 ## (note: NOT necessary, only do this if you don't trust the .jar that I already generated or you are changing the code yourself)
 
 Simply run compile.bat to compile the jar (requires jdk installed).
 
-# Ingame settings (you MUST do this or the bot won't work at all)
+# Ingame settings 
+## you MUST do this or the bot won't work at all
 1. Go to settings
 2. click on "Animation/Resolution settings"
 3. Set "Version Settings" to "Beta"
