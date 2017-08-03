@@ -1,14 +1,20 @@
 ## Granblue Fantasy Pokerbot
+This is a free bot that plays Granblue Fantasy's poker game for you.
 
-This bot is meant to be used with the browser version of the game in chrome (http://game.granbluefantasy.jp/).
+* This bot is meant to be used with the browser version of the game in chrome (http://game.granbluefantasy.jp/).
 
-The bot makes use of screenshots to determine its next move (no http requests at all or anything like that) and moves/clicks with the cursor to emulate a reel human bean, making it pretty much undetectable. 
+* The bot makes use of screenshots (image recognition) to determine its next move (no http requests at all or anything like that) and moves/clicks with the cursor to emulate a human, making it pretty much undetectable. 
 
-During testing I ran the bot for 15 hours straight, earning about 3.4M coins an hour. Every 4 hours or so I had to fill in the captcha (the bot freezes when the captcha pops up) to keep going. It should be safe to bot for 1-2 hours but I don't recommend doing more than that.
+* Earns about 3.4M coins an hour, note that the bot goes for "big" wins, meaning that it's possible you won't be seeing gains for a while (usually 1m every ~20 minutes).
 
-It should run fine on any pc (need some feedback on this), on my 6 year old i5 2500k with only browser+bot running my cpu usage sits at 5-10%.
+* The recommended runtime for this bot is 1-2 hours. Anything more than 2 hours is dangerous and not recommended.
 
-[1. Compile](#1-compile) <br />
+* If you decide to bot for more than 2 hours, keep in mind every ~3 hours or so you will have to fill in the captcha (the bot freezes when the captcha pops up and plays a warning sound) to keep going. Not filling in the captcha may get your account suspended.
+
+* System requirements: runs on practically anything. On my i5 2500k, cpu usage sits at 2-10%.
+* Requires [java 8](https://java.com/en/download/) installed. 
+
+[1. Compilation](#1-compilation) <br />
 [2. Ingame settings](#2-ingame-settings) <br />
 [3. Bot settings](#3-bot-settings) <br />
 [4. Starting the bot](#4-starting-the-bot) <br />
@@ -16,15 +22,15 @@ It should run fine on any pc (need some feedback on this), on my 6 year old i5 2
  
 
 
-# 1. Compile
-## (note: NOT necessary, only do this if you don't trust the .jar that I already generated or you are changing the code yourself)
+# 1. Compilation
+## (note: this is NOT necessary, only do this if you don't trust the .jar that I already generated or you are changing the code yourself)
 
-Simply run compile.bat to compile the jar (requires jdk installed).
+* Windows: Simply run compile.bat to compile the jar (requires [jdk](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed ).
 
 # 2. Ingame settings 
 ## you MUST do this or the bot won't work at all
-1. Go to settings
-2. click on "Animation/Resolution settings"
+1. Go to settings (click top right on "menu", the red button "settings" is on the bottom right)
+2. Click on "Animation/Resolution settings"
 3. Set "Version Settings" to "Beta"
 4. Set "Animations Settings" to "Lite" (recommended if your game lags often) OR set "Resolution Settings"  to "Lite" and save changes
 
