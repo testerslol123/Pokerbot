@@ -119,7 +119,7 @@ You can test this out by blocking the gameboard for a few seconds while the bot 
 
 # 4. Starting the bot
 1. Download the zipfile and extract it
-2. Adjust settings as needed (see: Bot settings)
+2. Adjust settings as needed (see: [Bot settings](#3-bot-settings) )
 3. 
 * Windows: Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/). A cmd window will open. The bot will show you the current settings and start loading assets.
 * Linux: open a console. Type "java -version", the version should be 1.8.* (* is any number) or 1.9.*, if you get an error or your java is outdated, search in google how to update/download java for your system.<br />
