@@ -16,6 +16,9 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class Bot implements Runnable {
 
@@ -26,6 +29,7 @@ public class Bot implements Runnable {
   private int clickDelay;
   private int delayNormal;
   private int delayHL;
+  private int sound;
 
 
   public Bot(Properties properties) {
@@ -59,9 +63,9 @@ public class Bot implements Runnable {
     System.out.println("delayHL="+delayHL);
 
     //clickDelay
-    clickDelay = checkProperty(properties, "clickDelay", 200);
+    clickDelay = checkProperty(properties, "clickDelay", 150);
     if(clickDelay<0){
-      clickDelay=200;
+      clickDelay=150;
     }
     if(clickDelay<150){
       System.out.println("WARNING: clickDelay below 150ms causes the bot to act too quickly, possibly flagging you for making too many actions. Not recommended");
@@ -71,8 +75,15 @@ public class Bot implements Runnable {
     safeRound = checkProperty(properties, "safeRound", 7);
     System.out.println("safeRound="+safeRound);
 
-    HLBound = checkProperty(properties, "HLBound", 2);
+    HLBound = checkProperty(properties, "HLBound", 1);
     System.out.println("HLBound="+HLBound);
+
+    String[] soundString = new String[]{"Lyria singing","Ifrit screaming","Sagitarius warning"};
+    sound =checkProperty(properties, "sound", 1);
+    if(sound<1 || sound>3){
+      sound=1;
+    }
+    System.out.println("Warning sound ="+(soundString[sound-1]));
   }
 
   public int checkProperty(Properties properties, String name, int def) {
@@ -156,16 +167,18 @@ public class Bot implements Runnable {
 
           if (choosing) {
             //search for WIN/LOSE
+            actionDelay=delayNormal;
             identifyStage1();
           } else {
+            actionDelay=delayHL;
             identifyStage2();
           }
           System.out.println("########################");
           System.out.println("FOUND STAGE:" + newStage);
           handle(newStage);
 
-          //actionDelay in ms
-          delay = rand.nextInt(500);
+          //actionDelay+random delay in ms
+          delay = rand.nextInt(300);
           Thread.sleep(actionDelay + delay);
           current = System.currentTimeMillis();
         }
@@ -196,7 +209,6 @@ public class Bot implements Runnable {
         nextCard = -1;
         currentRound = 1;
         choosing = false;
-        actionDelay = delayHL;
         click(rightButton);
         break;
 
@@ -277,23 +289,38 @@ public class Bot implements Runnable {
 
       case OTHER:
         otherRepeat++;
-        if (otherRepeat > 3 && otherRepeat < 10) {
+        if (otherRepeat > 5 && otherRepeat < 20) {
           choosing = !choosing;
           //otherRepeat = 0;
           //click(centerButton);
         }
-        if (otherRepeat >= 10) {
+        if (otherRepeat >= 20) {
+
+          //play sound
+          try {
+            Clip clip = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                getClass().getClassLoader().getResource("img/sound/alert"+sound+".wav"));
+            clip.open(inputStream);
+            clip.start();
+          }
+          catch (Exception e){
+            System.out.println("COULD NOT PLAY SOUND");
+          }
+
+          System.out.println("########################");
           System.out.println("ERROR: the bot is unable to identify the current stage");
           System.out.println("Possible causes:");
           System.out.println("- Browser was moved");
           System.out.println("- Captcha popped up");
+          System.out.println("- Something is covering the gameboard");
           System.out.println();
-          System.out.println("Press enter to resume the bot");
+          System.out.println("Press ENTER to resume the bot");
           System.in.read();
           otherRepeat = 0;
         }
 
-        actionDelay = delayNormal;
+        actionDelay = 500;
         break;
     }
   }
@@ -306,7 +333,6 @@ public class Bot implements Runnable {
     currentRound = 1;
     lowerThan8=0;
     higherThan8=0;
-    actionDelay = delayNormal;
   }
 
   private int otherRepeat = 0;

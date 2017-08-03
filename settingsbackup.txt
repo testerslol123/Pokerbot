@@ -30,3 +30,12 @@ delayHL=2500
 
 ### How long it takes to move the cursor from one point to another in ms
 clickDelay=200
+
+
+####### OTHER SETTINGS
+### Warning sound that plays when the catpcha shows up
+### value from 1 to 3
+sound=1
+# 1 = Lyria singing
+# 2 = Ifrit screaming
+# 3 = Sagitarius warning
