@@ -93,7 +93,15 @@ Recommended value: 2500
 
 Recommended value: 150-200. 
 
+## Other settings
+### Sound warning
+When the bot stops working (something blocks the gameboard / captcha shows up), a warning sound will play. You can change the warning sound in the settings (line 38).
+These are the current available sounds:
+1. Lyria singing
+2. Ifrit screaming
+3. Sagitarius warning
 
+You can test this out by blocking the gameboard for a few seconds while the bot is running.
 
 # Starting the bot
 1. Download the zipfile and extract it
