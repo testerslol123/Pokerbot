@@ -308,6 +308,7 @@ public class Bot implements Runnable {
             System.out.println("COULD NOT PLAY SOUND");
           }
 
+
           System.out.println("########################");
           System.out.println("ERROR: the bot is unable to identify the current stage");
           System.out.println("Possible causes:");
@@ -316,7 +317,8 @@ public class Bot implements Runnable {
           System.out.println("- Something is covering the gameboard");
           System.out.println();
           System.out.println("Press ENTER to resume the bot");
-          System.in.read();
+          Scanner scanner = new Scanner(System.in);
+          scanner.nextLine();
           otherRepeat = 0;
         }
 
