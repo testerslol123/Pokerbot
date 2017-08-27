@@ -40,50 +40,50 @@ public class Bot implements Runnable {
     if (runtime < 0) {
       runtime = 60;
     }
-    System.out.println("runtime="+runtime);
+    System.out.println("runtime=" + runtime);
 
     //delayNormal
     delayNormal = checkProperty(properties, "delayNormal", 3000);
-    if(delayNormal<0){
-      delayNormal=3000;
+    if (delayNormal < 0) {
+      delayNormal = 3000;
     }
-    if(delayNormal<3000){
+    if (delayNormal < 3000) {
       System.out.println("WARNING: delayNormal below 3000ms may cause the bot to desync");
     }
-    System.out.println("delayNormal="+delayNormal);
+    System.out.println("delayNormal=" + delayNormal);
 
     //delayHL
     delayHL = checkProperty(properties, "delayHL", 2500);
-    if(delayHL<0){
-      delayHL=2500;
+    if (delayHL < 0) {
+      delayHL = 2500;
     }
-    if(delayHL<2500){
+    if (delayHL < 2500) {
       System.out.println("WARNING: delayHL below 2500ms may cause the bot to desync");
     }
-    System.out.println("delayHL="+delayHL);
+    System.out.println("delayHL=" + delayHL);
 
     //clickDelay
     clickDelay = checkProperty(properties, "clickDelay", 150);
-    if(clickDelay<0){
-      clickDelay=150;
+    if (clickDelay < 0) {
+      clickDelay = 150;
     }
-    if(clickDelay<150){
+    if (clickDelay < 150) {
       System.out.println("WARNING: clickDelay below 150ms causes the bot to act too quickly, possibly flagging you for making too many actions. Not recommended");
     }
-    System.out.println("clickDelay="+clickDelay);
+    System.out.println("clickDelay=" + clickDelay);
 
     safeRound = checkProperty(properties, "safeRound", 7);
-    System.out.println("safeRound="+safeRound);
+    System.out.println("safeRound=" + safeRound);
 
     HLBound = checkProperty(properties, "HLBound", 1);
-    System.out.println("HLBound="+HLBound);
+    System.out.println("HLBound=" + HLBound);
 
-    String[] soundString = new String[]{"Lyria singing","Ifrit screaming","Sagitarius warning"};
-    sound =checkProperty(properties, "sound", 1);
-    if(sound<1 || sound>3){
-      sound=1;
+    String[] soundString = new String[]{"Lyria singing", "Ifrit screaming", "Sagitarius warning"};
+    sound = checkProperty(properties, "sound", 1);
+    if (sound < 1 || sound > 3) {
+      sound = 1;
     }
-    System.out.println("Warning sound ="+(soundString[sound-1]));
+    System.out.println("Warning sound =" + (soundString[sound - 1]));
   }
 
   public int checkProperty(Properties properties, String name, int def) {
@@ -137,11 +137,25 @@ public class Bot implements Runnable {
   private int higherThan8 = 0;
   private int lowerThan8 = 0;
 
+  public void testSuits() throws AWTException, IOException, InterruptedException {
+    init();
+    initCards();
+    System.out.println(start);
+    while (true) {
+      System.out.println("PRES ENTER");
+      Scanner scanner = new Scanner(System.in);
+      scanner.nextLine();
+      currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+      identifyCards();
+      for (Card card : cards) {
+        System.out.println(card);
+      }
+    }
+  }
 
   public void run() {
     try {
       init();
-
       if (start != null) {
         //found game board
         System.out.println("############GAMEBOARD FOUND");
@@ -156,7 +170,7 @@ public class Bot implements Runnable {
 
         //random delay in ms between actions
         int delay;
-        actionDelay=delayNormal;
+        actionDelay = delayNormal;
 
         System.out.println("############STARTING BOT");
 
@@ -167,10 +181,10 @@ public class Bot implements Runnable {
 
           if (choosing) {
             //search for WIN/LOSE
-            actionDelay=delayNormal;
+            actionDelay = delayNormal;
             identifyStage1();
           } else {
-            actionDelay=delayHL;
+            actionDelay = delayHL;
             identifyStage2();
           }
           System.out.println("########################");
@@ -187,7 +201,7 @@ public class Bot implements Runnable {
         System.out.println("ERROR: Could not find gameboard, make sure size is set to full and the whole gameboard is visible");
       }
     } catch (Exception e) {
-      System.out.println(e);
+      System.err.println(e);
     }
 
   }
@@ -227,16 +241,15 @@ public class Bot implements Runnable {
           click(rightButton);
         } else if (currentCard < 8) {
           click(leftButton);
-        } else if (currentCard >8){
+        } else if (currentCard > 8) {
           click(rightButton);
-        } else{
+        } else {
           //handling 8
           //look at the amount of cards that were lower/higher than 8 during this game
-          if(higherThan8>lowerThan8){
+          if (higherThan8 > lowerThan8) {
             //click "lower" if there were less cards lower than 8 throughout this game
             click(rightButton);
-          }
-          else{
+          } else {
             //click higher otherwise
             click(leftButton);
           }
@@ -250,10 +263,9 @@ public class Bot implements Runnable {
         identifyValueHL(false);
         System.out.println("NEXT CARD=" + nextCard);
 
-        if(currentCard>8){
+        if (currentCard > 8) {
           higherThan8++;
-        }
-        else if (currentCard<8){
+        } else if (currentCard < 8) {
           lowerThan8++;
         }
 
@@ -300,14 +312,12 @@ public class Bot implements Runnable {
           try {
             Clip clip = AudioSystem.getClip();
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                getClass().getClassLoader().getResource("img/sound/alert"+sound+".wav"));
+                getClass().getClassLoader().getResource("img/sound/alert" + sound + ".wav"));
             clip.open(inputStream);
             clip.start();
-          }
-          catch (Exception e){
+          } catch (Exception e) {
             System.out.println("COULD NOT PLAY SOUND");
           }
-
 
           System.out.println("########################");
           System.out.println("ERROR: the bot is unable to identify the current stage");
@@ -333,8 +343,8 @@ public class Bot implements Runnable {
     currentCard = -1;
     nextCard = -1;
     currentRound = 1;
-    lowerThan8=0;
-    higherThan8=0;
+    lowerThan8 = 0;
+    higherThan8 = 0;
   }
 
   private int otherRepeat = 0;
@@ -346,7 +356,7 @@ public class Bot implements Runnable {
     //load base picture and icons
     try {
       gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
-     // System.out.println("LOADING CARD SUIT ICONS");
+      // System.out.println("LOADING CARD SUIT ICONS");
       //regular icons
       BufferedImage spadesIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/spadeIcon.png"));
       BufferedImage clubsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/clubIcon.png"));
@@ -363,7 +373,7 @@ public class Bot implements Runnable {
       blackIcons = new BufferedImage[]{spadesIcon, clubsIcon, spadesLetterIcon, clubsLetterIcon};
       redIcons = new BufferedImage[]{heartsIcon, diamondsIcon, heartsLetterIcon, diamondsLetterIcon};
 
-    //  System.out.println("LOADING CARD VALUE ICONS");
+      //  System.out.println("LOADING CARD VALUE ICONS");
       //load small number images
       for (int i = 1; i < 11; i++) {
         numberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/number/" + i + "b.png"));
@@ -377,7 +387,7 @@ public class Bot implements Runnable {
         bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/bigNumber/" + i + ".png"));
       }
 
-   //   System.out.println("LOADING STAGE ICONS");
+      //   System.out.println("LOADING STAGE ICONS");
       //stage icons
       BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/dealIcon.png"));
       BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/selectIcon.png"));
@@ -396,9 +406,10 @@ public class Bot implements Runnable {
     }
 
     System.out.println();
-    System.out.println("The bot is set to run for "+runtime+" MINUTES");
+    System.out.println("The bot is set to run for " + runtime + " MINUTES");
     System.out.println("This can be changed in the settings.txt file");
     Scanner scanner = new Scanner(System.in);
+
     while (start == null) {
       Thread.sleep(1000);
       System.out.println();
@@ -413,7 +424,7 @@ public class Bot implements Runnable {
       //find base pic in screenshot
       gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
 
-      start = findMatches(currentSS, gameboard, 10, 50);
+      start = findMatches(currentSS, gameboard, 5, 25);
 
       if (start == null) {
         System.out.println("############GAMEBOARD NOT FOUND");
@@ -423,15 +434,16 @@ public class Bot implements Runnable {
       }
     }
 
-    //init buttons
-    centerButton = new Loc(start, new Loc(324, 726));
-    leftButton = new Loc(start, new Loc(240, 726));
-    rightButton = new Loc(start, new Loc(400, 726));
+      //init buttons
+      centerButton = new Loc(start, new Loc(324, 726));
+      leftButton = new Loc(start, new Loc(240, 726));
+      rightButton = new Loc(start, new Loc(400, 726));
 
 
-  }
+    }
 
-  //diff with 8
+    //diff with 8
+
   private int valueDiff(int a) {
     return Math.abs(a - 8);
   }
@@ -510,7 +522,7 @@ public class Bot implements Runnable {
     suits = (isBlack) ? blackSuits : redSuits;
 
     for (int i = 0; i < icons.length; i++) {
-      Loc r = findMatches(cardIcon, icons[i], 10, 50);
+      Loc r = findMatches(cardIcon, icons[i], 8, 50);
       if (r != null) {
         card.setSuit(suits[i]);
         //first 2 elements in icons array are number suit icons, last are for letters
