@@ -16,8 +16,8 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 
 [1. Compilation](#1-compilation) <br />
 [2. Ingame settings](#2-ingame-settings) <br />
-[3. Bot settings](#3-bot-settings) <br />
-[4. Starting the bot](#4-starting-the-bot) <br />
+[3. Starting the bot](#3-starting-the-bot) <br />
+[4. Bot settings](#4-bot-settings) <br />
 [5. Feedback](#5-feedback) <br />
  
 
@@ -43,8 +43,42 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 
 ![Step 4 settings](/src/img/readme/settings4.jpg)
 
+# 3. Starting the bot
+1. Download the zipfile and extract it
+2. Adjust settings as needed (see: [Bot settings](#4-bot-settings) )
+3. 
+* Windows: Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/). A cmd window will open. The bot will show you the current settings and start loading assets.
+* Linux: open a console. Type "java -version", the version should be 1.8.* (* is any number) or 1.9.*, if you get an error or your java is outdated, search in google how to update/download java for your system.<br />
+If you have the right java version, run the following commands (replace PATH with the full path to the directory where you unpacked the zip):<br />
+cd PATH<br />
+java -jar Pokerbot.jar settings.txt<br />
 
-# 3. Bot settings
+4. Open your game in chrome and start a poker game
+5. Now you need to make sure that the gameboard is visible.
+If your screen is big enough just do it like this (expand your browser so the whole board is visible).
+
+![Step 5 setup](/src/img/readme/step5.jpg)
+
+For people who have small screens, you can make your browser a bit smaller:
+
+![Step 5 setup small](/src/img/readme/step5new.jpg)
+
+This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x10" line and the buttons on the bottom of the gameboard fully visible). If you show any less than this the bot will not work.
+
+![Step 5 setup minimum](/src/img/readme/step5minimum.jpg)
+
+6. Place your browser window as close to the top left of the screen as you can (this makes the next step faster)
+7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
+8. The bot will start working and will stop after the amount of minutes in the settings file. (If you want to stop it earlier just close the cmd window)
+
+If you get an error after 7 ("GAMEBOARD NOT FOUND"):
+* Make sure your ingame settings are correct and you saved changes.
+* Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
+* Press enter again to restart the process on the cmd window.
+
+
+
+# 4. Bot settings
 To change the bot settings, open the "settings.txt" file and change the values as needed.
 Here is an overview of the settings you can change. I recommend leaving everything as is and simply changing the runtime.
 
@@ -116,39 +150,6 @@ These are the current available sounds:
 3. Sagitarius warning
 
 You can test this out by blocking the gameboard for a few seconds while the bot is running.
-
-# 4. Starting the bot
-1. Download the zipfile and extract it
-2. Adjust settings as needed (see: [Bot settings](#3-bot-settings) )
-3. 
-* Windows: Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/). A cmd window will open. The bot will show you the current settings and start loading assets.
-* Linux: open a console. Type "java -version", the version should be 1.8.* (* is any number) or 1.9.*, if you get an error or your java is outdated, search in google how to update/download java for your system.<br />
-If you have the right java version, run the following commands (replace PATH with the full path to the directory where you unpacked the zip):<br />
-cd PATH<br />
-java -jar Pokerbot.jar settings.txt<br />
-
-4. Open your game in chrome and start a poker game
-5. Now you need to make sure that the gameboard is visible.
-If your screen is big enough just do it like this (expand your browser so the whole board is visible).
-
-![Step 5 setup](/src/img/readme/step5.jpg)
-
-For people who have small screens, you can make your browser a bit smaller:
-
-![Step 5 setup small](/src/img/readme/step5new.jpg)
-
-This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x10" line and the buttons on the bottom of the gameboard fully visible). If you show any less than this the bot will not work.
-
-![Step 5 setup minimum](/src/img/readme/step5minimum.jpg)
-
-6. Place your browser window as close to the top left of the screen as you can (this makes the next step faster)
-7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
-8. The bot will start working and will stop after the amount of minutes in the settings file. (If you want to stop it earlier just close the cmd window)
-
-If you get an error after 7 ("GAMEBOARD NOT FOUND"):
-* Make sure your ingame settings are correct and you saved changes.
-* Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
-* Press enter again to restart the process on the cmd window.
 
 # 5. Feedback
 There may be some bugs left that I overlooked, if you notice anything weird while the bot is running let me know by making an issue (https://github.com/tsuntsuntsuntsun/Pokerbot/issues).
