@@ -32,7 +32,7 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 1. Go to settings (click top right on "menu", the red button "settings" is on the bottom right)
 2. Click on "Animation/Resolution settings"
 3. Set "Version Settings" to "Beta"
-4. Set "Animations Settings" to "Lite" (recommended if your game lags often) OR set "Resolution Settings"  to "Lite" and save changes
+4. Set "Animations Settings" to "Standard" and set "Resolution Settings"  to "Lite" and save changes
 
 ![Step 3 settings](/src/img/readme/settings3.jpg)
 
