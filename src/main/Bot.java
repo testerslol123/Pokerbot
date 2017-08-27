@@ -523,7 +523,7 @@ public class Bot implements Runnable {
     suits = (isBlack) ? blackSuits : redSuits;
 
     for (int i = 0; i < icons.length; i++) {
-      Loc r = findMatches(cardIcon, icons[i], 8, 50);
+      Loc r = findMatches(cardIcon, icons[i], 9, 50);
       if (r != null) {
         card.setSuit(suits[i]);
         //first 2 elements in icons array are number suit icons, last are for letters
