@@ -45,7 +45,7 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 
 # 3. Starting the bot
 1. Download the zipfile and extract it
-2. Adjust settings as needed (see: [Bot settings](#4-bot-settings) )
+2. Open the settings.txt and change the runtime (edit the line that says "runtime=60", change 60 to the amount of minutes you want the bot to run). I recommend leaving the other settings alone. (see: [Bot settings](#4-bot-settings) ).
 3. 
 * Windows: Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/). A cmd window will open. The bot will show you the current settings and start loading assets.
 * Linux: open a console. Type "java -version", the version should be 1.8.* (* is any number) or 1.9.*, if you get an error or your java is outdated, search in google how to update/download java for your system.<br />
@@ -53,7 +53,7 @@ If you have the right java version, run the following commands (replace PATH wit
 cd PATH<br />
 java -jar Pokerbot.jar settings.txt<br />
 
-4. Open your game in chrome and start a poker game
+4. Open your game in chrome and start a poker game with 1000-Chip Bet and 2 CARDS
 5. Now you need to make sure that the gameboard is visible.
 If your screen is big enough just do it like this (expand your browser so the whole board is visible).
 
@@ -68,6 +68,7 @@ This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x1
 ![Step 5 setup minimum](/src/img/readme/step5minimum.jpg)
 
 6. Place your browser window as close to the top left of the screen as you can (this makes the next step faster)
+* IF YOU ARE USING VIRAMATE, DISABLE THE IMPROVED ENGLISH FONT SETTINGS (OR DISABLE VIRAMATE ENTIRELY), THE BOT WON'T WORK AT ALL WITH DIFFERENT FONTS
 7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
 8. The bot will start working and will stop after the amount of minutes in the settings file. (If you want to stop it earlier just close the cmd window)
 
@@ -76,6 +77,9 @@ If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 * Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
 * Press enter again to restart the process on the cmd window.
 
+If you keep seeing "CURRENT STAGE: OTHER" after the gameboard was found:
+* You are probably using viramate and didn't disable it
+* Reread the ingame setting section, your resoultion might be wrong
 
 
 # 4. Bot settings
