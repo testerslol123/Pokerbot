@@ -415,6 +415,7 @@ public class Bot implements Runnable {
       System.out.println();
       System.out.println("-Make sure the poker gameboard is fully visible and the game resolution is set to \"Lite\"");
       System.out.println("-Position your browser as close as you can to the top left corner of your screen");
+      System.out.println("-If you are using viramate, disable the improved fonts");
       System.out.println();
       System.out.println("Press ENTER to start searching for the gameboard (may take 1 or 2 mins)");
       scanner.nextLine();
