@@ -72,6 +72,8 @@ This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x1
 7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
 8. The bot will start working and will stop after the amount of minutes in the settings file. (If you want to stop it earlier just close the cmd window)
 
+## Troubleshooting
+
 If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 * Make sure your ingame settings are correct and you saved changes.
 * Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
