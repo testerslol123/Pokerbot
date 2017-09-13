@@ -18,7 +18,7 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 [2. Ingame settings](#2-ingame-settings) <br />
 [3. Starting the bot](#3-starting-the-bot) <br />
 [4. Bot settings](#4-bot-settings) <br />
-[5. Feedback](#5-feedback) <br />
+[5. Feedback/Contact](#5-feedback) <br />
  
 
 
@@ -75,11 +75,15 @@ This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x1
 If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 * Make sure your ingame settings are correct and you saved changes.
 * Make sure you can see the gameboard as shown on the pictures of step 5. Also don't cover the gameboard with your mouse.
+* It's possible your browser is zoomed out/in even if your ingame settings are right (compare the size of your gameboard to the screenshots used in this guide). Use ctrl+mouse wheel to fix it.
 * Press enter again to restart the process on the cmd window.
 
 If you keep seeing "CURRENT STAGE: OTHER" after the gameboard was found:
 * You are probably using viramate and didn't disable it
 * Reread the ingame setting section, your resoultion might be wrong
+
+If none of this helps you can make an issue here https://github.com/tsuntsuntsuntsun/Pokerbot/issues .
+You can also contact me on discord at tsun\#3515 and I will try to help you set it up.
 
 
 # 4. Bot settings
@@ -155,8 +159,10 @@ These are the current available sounds:
 
 You can test this out by blocking the gameboard for a few seconds while the bot is running.
 
-# 5. Feedback
+# 5. Feedback/Contact
 There may be some bugs left that I overlooked, if you notice anything weird while the bot is running let me know by making an issue (https://github.com/tsuntsuntsuntsun/Pokerbot/issues).
+
+You can also message me on discord if you have any questions or need help getting the bot to work, my id is tsun\#3515
 
 For people feeling generous, you can donate here
 
