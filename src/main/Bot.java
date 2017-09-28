@@ -30,6 +30,7 @@ public class Bot implements Runnable {
   private int delayNormal;
   private int delayHL;
   private int sound;
+  private boolean medium;
 
 
   public Bot(Properties properties) {
@@ -41,6 +42,9 @@ public class Bot implements Runnable {
       runtime = 60;
     }
     System.out.println("runtime=" + runtime);
+
+    int med = checkProperty(properties, "medium",0);
+    medium = !(med==0);
 
     //delayNormal
     delayNormal = checkProperty(properties, "delayNormal", 3000);
@@ -100,6 +104,7 @@ public class Bot implements Runnable {
   //screenshot being used in current iteration
   private BufferedImage currentSS;
 
+  //Large Settings
   private BufferedImage[] numberImages = new BufferedImage[10];
   private BufferedImage[] bigNumberImages = new BufferedImage[13];
   private BufferedImage[] letterImages = new BufferedImage[3];
@@ -109,6 +114,15 @@ public class Bot implements Runnable {
 
   private Suit[] redSuits = new Suit[]{Suit.HEARTS, Suit.DIAMONDS, Suit.HEARTS, Suit.DIAMONDS};
   private BufferedImage[] redIcons;
+
+  //Medium Settings
+  private BufferedImage[] heartCards = new BufferedImage[13];
+  private BufferedImage[] spadeCards = new BufferedImage[13];
+  private BufferedImage[] diamondCards = new BufferedImage[13];
+  private BufferedImage[] clubCards = new BufferedImage[13];
+
+
+
 
   private Loc start;
 
@@ -347,6 +361,7 @@ public class Bot implements Runnable {
     higherThan8 = 0;
   }
 
+  //used for detecting error
   private int otherRepeat = 0;
 
   private void init() throws AWTException, IOException, InterruptedException {
@@ -355,47 +370,59 @@ public class Bot implements Runnable {
 
     //load base picture and icons
     try {
-      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
-      // System.out.println("LOADING CARD SUIT ICONS");
-      //regular icons
-      BufferedImage spadesIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/spadeIcon.png"));
-      BufferedImage clubsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/clubIcon.png"));
-      BufferedImage heartsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/heartIcon.png"));
-      BufferedImage diamondsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/diamondIcon.png"));
 
-      //letter icons
-      BufferedImage spadesLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/spadeLetterIcon.png"));
-      BufferedImage clubsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/clubLetterIcon.png"));
-      BufferedImage heartsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/heartLetterIcon.png"));
-      BufferedImage diamondsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/diamondLetterIcon.png"));
+      if(medium){
+        System.out.println("Using MEDIUM settings");
+        for(int i=1;i<=13;i++){
 
-      //icons by color
-      blackIcons = new BufferedImage[]{spadesIcon, clubsIcon, spadesLetterIcon, clubsLetterIcon};
-      redIcons = new BufferedImage[]{heartsIcon, diamondsIcon, heartsLetterIcon, diamondsLetterIcon};
+        }
 
-      //  System.out.println("LOADING CARD VALUE ICONS");
-      //load small number images
-      for (int i = 1; i < 11; i++) {
-        numberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/number/" + i + "b.png"));
       }
-      letterImages[0] = ImageIO.read(getClass().getClassLoader().getResource("img/number/jb.png"));
-      letterImages[1] = ImageIO.read(getClass().getClassLoader().getResource("img/number/qb.png"));
-      letterImages[2] = ImageIO.read(getClass().getClassLoader().getResource("img/number/kb.png"));
+      else{
 
-      //big numbers
-      for (int i = 1; i < 14; i++) {
-        bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/bigNumber/" + i + ".png"));
+        System.out.println("Using LARGE settings");
+
+        //regular icons
+        BufferedImage spadesIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/spadeIcon.png"));
+        BufferedImage clubsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/clubIcon.png"));
+        BufferedImage heartsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/heartIcon.png"));
+        BufferedImage diamondsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/diamondIcon.png"));
+
+        //letter icons
+        BufferedImage spadesLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/spadeLetterIcon.png"));
+        BufferedImage clubsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/clubLetterIcon.png"));
+        BufferedImage heartsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/heartLetterIcon.png"));
+        BufferedImage diamondsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/diamondLetterIcon.png"));
+
+        //icons by color
+        blackIcons = new BufferedImage[]{spadesIcon, clubsIcon, spadesLetterIcon, clubsLetterIcon};
+        redIcons = new BufferedImage[]{heartsIcon, diamondsIcon, heartsLetterIcon, diamondsLetterIcon};
+
+        //load small number images
+        for (int i = 1; i < 11; i++) {
+          numberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/" + i + "b.png"));
+        }
+        letterImages[0] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/jb.png"));
+        letterImages[1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/qb.png"));
+        letterImages[2] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/kb.png"));
+
+        //big numbers
+        for (int i = 1; i < 14; i++) {
+          bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/bigNumber/" + i + ".png"));
+        }
       }
 
-      //   System.out.println("LOADING STAGE ICONS");
+
+
       //stage icons
-      BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/dealIcon.png"));
-      BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/selectIcon.png"));
-      BufferedImage winIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/winIcon.png"));
-      BufferedImage loseIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/loseIcon.png"));
-      BufferedImage selectHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/selectHLIcon.png"));
-      BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/winHLIcon.png"));
-      BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/loseHLIcon.png"));
+      String size= (medium) ? "medium" : "large";
+      BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/dealIcon.png"));
+      BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/selectIcon.png"));
+      BufferedImage winIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/winIcon.png"));
+      BufferedImage loseIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/loseIcon.png"));
+      BufferedImage selectHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/selectHLIcon.png"));
+      BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/winHLIcon.png"));
+      BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/"+size+"/stage/loseHLIcon.png"));
 
       stageIcons1 = new BufferedImage[]{selectIcon, winIcon, loseIcon, dealIcon};
       stageIcons2 = new BufferedImage[]{selectHLIcon, winHLIcon, loseHLIcon};

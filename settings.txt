@@ -5,6 +5,9 @@
 ### Bot runtime in minutes
 runtime=60
 
+###### GAME SIZE
+### Set this to 0 to use large settings
+medium=false
 
 ####### Settings during higher-lower
 
