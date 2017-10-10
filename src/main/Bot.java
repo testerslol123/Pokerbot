@@ -174,11 +174,6 @@ public class Bot implements Runnable {
   }
 
   public void run() {
-    /*try {
-      testSuits();
-    } catch (Exception e) {
-      System.out.println(e);
-    }*/
     medium=true;
     try {
       init();
@@ -202,6 +197,7 @@ public class Bot implements Runnable {
 
         //main loop
         while (current < end) {
+
           //take screenshot
           currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 
@@ -239,6 +235,10 @@ public class Bot implements Runnable {
         otherRepeat = 0;
         identifyCards();
         selectCards();
+        System.out.println("PRES ENTER");
+        Scanner scanner1 = new Scanner(System.in);
+        scanner1.nextLine();
+        //todo remove
         click(centerButton);
         break;
 
@@ -263,6 +263,12 @@ public class Bot implements Runnable {
           identifyValueHL(true);
         }
         System.out.println("CURRENT CARD = " + currentCard);
+
+        System.out.println("PRES ENTER");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        //todo remove
+
         if (currentCard == 1) {
           click(rightButton);
         } else if (currentCard < 8) {
@@ -353,8 +359,9 @@ public class Bot implements Runnable {
           System.out.println("- Something is covering the gameboard");
           System.out.println();
           System.out.println("Press ENTER to resume the bot");
-          Scanner scanner = new Scanner(System.in);
-          scanner.nextLine();
+        //  Scanner scanner = new Scanner(System.in);
+        //  scanner.nextLine();
+          //todo remove
           otherRepeat = 0;
         }
 
@@ -477,7 +484,6 @@ public class Bot implements Runnable {
         System.out.println("############GAMEBOARD NOT FOUND");
       } else {
         //adjust to old values
-        //todo
         if (!medium) {
           start.setY(start.getY() - 196);
         }
@@ -523,7 +529,6 @@ public class Bot implements Runnable {
     newStage = Stage.OTHER;
   }
 
-  //todo
   //identify stage during hl
   private void identifyStage2() throws AWTException {
     Loc stageLoc;

@@ -42,9 +42,9 @@ public class CardSelector {
   public List<Card> select() {
 
     reset();
+    printCards();
     cards.sort(Comparator.comparingInt(Card::getValue));
 
-    printCards();
     markDoubleTriple();
     //printFound();
     if (cards.get(0).getValue() == -1) {
