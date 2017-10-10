@@ -235,10 +235,6 @@ public class Bot implements Runnable {
         otherRepeat = 0;
         identifyCards();
         selectCards();
-        System.out.println("PRES ENTER");
-        Scanner scanner1 = new Scanner(System.in);
-        scanner1.nextLine();
-        //todo remove
         click(centerButton);
         break;
 
@@ -263,11 +259,6 @@ public class Bot implements Runnable {
           identifyValueHL(true);
         }
         System.out.println("CURRENT CARD = " + currentCard);
-
-        System.out.println("PRES ENTER");
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
-        //todo remove
 
         if (currentCard == 1) {
           click(rightButton);
@@ -359,9 +350,9 @@ public class Bot implements Runnable {
           System.out.println("- Something is covering the gameboard");
           System.out.println();
           System.out.println("Press ENTER to resume the bot");
-        //  Scanner scanner = new Scanner(System.in);
-        //  scanner.nextLine();
-          //todo remove
+          Scanner scanner = new Scanner(System.in);
+          scanner.nextLine();
+
           otherRepeat = 0;
         }
 
