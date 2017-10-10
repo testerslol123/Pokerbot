@@ -154,26 +154,33 @@ public class Bot implements Runnable {
 
     init();
     System.out.println(start);
-    initCards();
+    clickFast(start);
+    //identifyStage1();
+  //  System.out.println(newStage);
+    //initCards();
     while (true) {
       System.out.println("PRES ENTER");
       Scanner scanner = new Scanner(System.in);
       scanner.nextLine();
       currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-      identifyCardsMed();
+      identifyStage1();
+      System.out.println(newStage);
+      /*identifyCardsMed();
       for (Card card : cards) {
         System.out.println(card);
-      }
+      }*/
     }
+
   }
 
   public void run() {
-    try {
+    /*try {
       testSuits();
     } catch (Exception e) {
       System.out.println(e);
-    }
-    /*try {
+    }*/
+    medium=true;
+    try {
       init();
       if (start != null) {
         //found game board
@@ -221,7 +228,7 @@ public class Bot implements Runnable {
       }
     } catch (Exception e) {
       System.err.println(e);
-    }*/
+    }
 
   }
 
@@ -493,8 +500,15 @@ public class Bot implements Runnable {
 
   //identify stage outside of hl
   private void identifyStage1() throws AWTException {
-    Loc stageLoc = new Loc(start, new Loc(285, 270));
-    BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 80, 50);
+    Loc stageLoc;
+    BufferedImage stageIcon;
+    if (medium) {
+      stageLoc = new Loc(start, new Loc(167, -233));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 150, 100);
+    } else    {
+      stageLoc = new Loc(start, new Loc(285, 270));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 80, 50);
+    }
     for (int i = 0; i < stageIcons1.length; i++) {
       Loc r = findMatches(stageIcon, stageIcons1[i], 10, 50);
       if (r != null) {
@@ -505,10 +519,20 @@ public class Bot implements Runnable {
     newStage = Stage.OTHER;
   }
 
+  //todo
   //identify stage during hl
   private void identifyStage2() throws AWTException {
-    Loc stageLoc = new Loc(start, new Loc(270, 220));
-    BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
+    Loc stageLoc;
+    BufferedImage stageIcon;
+    if (medium) {
+      stageLoc = new Loc(start, new Loc(151, -273));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 150, 150);
+    } else    {
+      stageLoc = new Loc(start, new Loc(270, 220));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
+    }
+    //Loc stageLoc = new Loc(start, new Loc(270, 220));
+   // BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
     for (int i = 0; i < stageIcons2.length; i++) {
       Loc r = findMatches(stageIcon, stageIcons2[i], 10, 50);
       if (r != null) {
@@ -618,9 +642,15 @@ public class Bot implements Runnable {
   }
 
   private void identifyCards() {
-    for (Card card : cards) {
-      identifySuit(card);
+    if(medium){
+      identifyCardsMed();
     }
+    else{
+      for (Card card : cards) {
+        identifySuit(card);
+      }
+    }
+
   }
 
   private void identifySuit(Card card) {
