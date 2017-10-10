@@ -392,6 +392,10 @@ public class Bot implements Runnable {
           diamondCards[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/d/" + i + "d.png"));
           spadeCards[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/s/" + i + "s.png"));
         }
+        //big numbers for hl
+        for (int i = 1; i < 14; i++) {
+          bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/bigNumber/" + i + ".png"));
+        }
 
       } else {
 
@@ -421,7 +425,7 @@ public class Bot implements Runnable {
         letterImages[1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/qb.png"));
         letterImages[2] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/kb.png"));
 
-        //big numbers
+        //big numbers for hl
         for (int i = 1; i < 14; i++) {
           bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/bigNumber/" + i + ".png"));
         }
@@ -551,7 +555,6 @@ public class Bot implements Runnable {
     }
   }
 
-
   //initialize values for the 5 cards in hand
   private void initCards() throws AWTException {
 
@@ -650,9 +653,9 @@ public class Bot implements Runnable {
         identifySuit(card);
       }
     }
-
   }
 
+  //used for large settings
   private void identifySuit(Card card) {
     //subimage of card suit icon
     BufferedImage cardIcon = currentSS.getSubimage(card.getLocation().getX(), card.getLocation().getY(), 25, 25);
@@ -688,6 +691,7 @@ public class Bot implements Runnable {
     }
   }
 
+  //used for large settings
   //identifies the value of cards outside of HL
   //offset is 10 for letter cards, 1 for numbers
   private void identifyValue(Card card, BufferedImage[] images, int offset) {
@@ -707,11 +711,21 @@ public class Bot implements Runnable {
   //if first is true, looks at the left card, otherwise looks at the right card
   private void identifyValueHL(boolean first) {
     BufferedImage cardNum;
-    Loc l = new Loc(start, new Loc(140, 306));
+    Loc l;
+    int offset;
+    if(medium){
+      offset=147;
+      l = new Loc(start, new Loc(95, -193));
+    }else{
+      offset=195;
+      l = new Loc(start, new Loc(140, 306));
+    }
+
+
     if (first) {
       cardNum = currentSS.getSubimage(l.getX(), l.getY(), 70, 100);
     } else {
-      cardNum = currentSS.getSubimage(l.getX() + 195, l.getY(), 100, 100);
+      cardNum = currentSS.getSubimage(l.getX() + offset, l.getY(), 100, 100);
     }
     for (int i = 0; i < bigNumberImages.length; i++) {
       Loc r = findMatches(cardNum, bigNumberImages[i], 20, 50);
