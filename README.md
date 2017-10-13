@@ -24,7 +24,7 @@ If you want to support the author, you can donate here
 [2. Ingame settings](#2-ingame-settings) <br />
 [3. Starting the bot](#3-starting-the-bot) <br />
 [4. Bot settings](#4-bot-settings) <br />
-[5. Feedback/Contact](#5-feedback) <br />
+[5. Feedback/Contact](#5-feedback/contact) <br />
  
 
 
