@@ -37,11 +37,11 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 ![Step 3 settings](/src/img/readme/settings3.jpg)
 
 5. Go back to settings, click on "Browser Version Settings"
-6. Set "Window Size" to "Large"
-7. Set "Bottom Menu" to "OFF"
-8. Set "Automatic Resizing" to "OFF" and save changes
+6. Set "Bottom Menu" to "OFF" (not necessary, only do this if your screen is too small to fit the poker gameboard)
+7. Set "Automatic Resizing" to "OFF" and save changes
 
 ![Step 4 settings](/src/img/readme/settings4.jpg)
+8. Set "Window Size" to "Large" or "Medium" (note that if you want to use medium window size, you must edit the settings.txt file, see: [Bot settings](#4-bot-settings))
 
 # 3. Starting the bot
 1. Download the zipfile and extract it
@@ -83,6 +83,7 @@ If you get an error after 7 ("GAMEBOARD NOT FOUND"):
 If you keep seeing "CURRENT STAGE: OTHER" after the gameboard was found:
 * You are probably using viramate and didn't disable it
 * Reread the ingame setting section, your resoultion might be wrong
+* If you are using Windows, you may have to enable ClearType (google how to enable it, it differs depending on your windows version)
 
 If none of this helps you can make an issue here https://github.com/tsuntsuntsuntsun/Pokerbot/issues .
 You can also contact me on discord at tsun\#3515 and I will try to help you set it up.
@@ -92,12 +93,15 @@ You can also contact me on discord at tsun\#3515 and I will try to help you set 
 To change the bot settings, open the "settings.txt" file and change the values as needed.
 Here is an overview of the settings you can change. I recommend leaving everything as is and simply changing the runtime.
 
-## Runtime
+## Runtime (line 6)
 The most important setting is "runtime" on line 6 of the settings file ("runtime=60"). Change the 60 to the amount of minutes you want the bot to run.
 
 Recommended value: 30 to 90
 
-If you want to use the default (recommended) settings, just skip the rest of this section and read "Starting the bot" section.
+## Ingame window size (line 10)
+The bot currently supports "Medium" or "Large" ingame window settings. Set this value to 0 to use LARGE settings (default), set it to 1 to use MEDIUM settings.
+
+If you want to use the default (recommended) settings, just skip the rest of this section.
 
 ## Higher-or-Lower settings
 The following 2 settings will influence when the bot will stop playing Higher-or-Lower (HL).
