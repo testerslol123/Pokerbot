@@ -24,7 +24,7 @@ If you want to support the author, you can donate here
 [2. Ingame settings](#2-ingame-settings) <br />
 [3. Starting the bot](#3-starting-the-bot) <br />
 [4. Bot settings](#4-bot-settings) <br />
-[5. Feedback/Contact](#5-feedback/contact) <br />
+[5. Feedback](#5-feedback) <br />
  
 
 
@@ -172,7 +172,7 @@ These are the current available sounds:
 
 You can test this out by blocking the gameboard for a few seconds while the bot is running.
 
-# 5. Feedback/Contact
+# 5. Feedback
 There may be some bugs left that I overlooked, if you notice anything weird while the bot is running let me know by making an issue (https://github.com/tsuntsuntsuntsun/Pokerbot/issues).
 
 You can also message me on discord if you have any questions or need help getting the bot to work, my id is tsun\#3515
