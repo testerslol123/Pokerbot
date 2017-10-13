@@ -1,11 +1,11 @@
 ## Granblue Fantasy Pokerbot
 This is a free bot that plays Granblue Fantasy's poker game for you.
 
-* This bot is meant to be used with the browser version of the game in chrome (http://game.granbluefantasy.jp/).
+* This bot is meant to be used with the browser version of the game in chrome (http://game.granbluefantasy.jp/). It currently supports Medium and Large window settings.
 
 * The bot makes use of screenshots (image recognition) to determine its next move (no http requests at all or anything like that) and moves/clicks with the cursor to emulate a human, making it pretty much undetectable. 
 
-* Earns about 3.4M coins an hour, note that the bot goes for "big" wins, meaning that it's possible you won't be seeing gains for a while (usually 1m every ~20 minutes).
+* Earns about 3.5M coins an hour, note that the bot goes for "big" wins, meaning that it's possible you won't be seeing gains for a while (usually 1m every ~20 minutes).
 
 * The recommended runtime for this bot is 1-2 hours. Anything more than 2 hours is dangerous and not recommended.
 
@@ -13,6 +13,12 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 
 * System requirements: runs on practically anything. On my i5 2500k, cpu usage sits at 2-10%.
 * Requires [java 8](https://java.com/en/download/) installed. 
+
+If you want to support the author, you can donate here
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N6YUUYVD4A32Y)
+
+<br /><br /><br />
 
 [1. Compilation](#1-compilation) <br />
 [2. Ingame settings](#2-ingame-settings) <br />
@@ -41,11 +47,12 @@ This is a free bot that plays Granblue Fantasy's poker game for you.
 7. Set "Automatic Resizing" to "OFF" and save changes
 
 ![Step 4 settings](/src/img/readme/settings4.jpg)
+
 8. Set "Window Size" to "Large" or "Medium" (note that if you want to use medium window size, you must edit the settings.txt file, see: [Bot settings](#4-bot-settings))
 
 # 3. Starting the bot
 1. Download the zipfile and extract it
-2. Open the settings.txt and change the runtime (edit the line that says "runtime=60", change 60 to the amount of minutes you want the bot to run). I recommend leaving the other settings alone. (see: [Bot settings](#4-bot-settings) ).
+2. Open the settings.txt and change the runtime (edit the line that says "runtime=60", change 60 to the amount of minutes you want the bot to run). If you are using medium window settings, change the line "medium=0" to "medium=1". I recommend leaving the other settings alone. (see: [Bot settings](#4-bot-settings) ).
 3. 
 * Windows: Run the "Pokerbot.bat" file (if you get an error here, make sure you have the latest version of java installed https://java.com/en/download/). A cmd window will open. The bot will show you the current settings and start loading assets.
 * Linux: open a console. Type "java -version", the version should be 1.8.* (* is any number) or 1.9.*, if you get an error or your java is outdated, search in google how to update/download java for your system.<br />
@@ -63,14 +70,14 @@ For people who have small screens, you can make your browser a bit smaller:
 
 ![Step 5 setup small](/src/img/readme/step5new.jpg)
 
-This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x10" line and the buttons on the bottom of the gameboard fully visible). If you show any less than this the bot will not work.
+This is the ABSOLUTE MINIMUM that must be visible (just above the "full house x10" line and the buttons on the bottom of the gameboard fully visible). If you show any less than this the bot will probably not work.
 
 ![Step 5 setup minimum](/src/img/readme/step5minimum.jpg)
 
 6. Place your browser window as close to the top left of the screen as you can (this makes the next step faster)
 * IF YOU ARE USING VIRAMATE, DISABLE THE IMPROVED ENGLISH FONT SETTINGS (OR DISABLE VIRAMATE ENTIRELY), THE BOT WON'T WORK AT ALL WITH DIFFERENT FONTS
 7. Press enter on the cmd window, the bot will now try to find the gameboard on your screen (DON'T MOVE YOUR BROWSER WINDOW AFTER THIS STEP)
-8. The bot will start working and will stop after the amount of minutes in the settings file. (If you want to stop it earlier just close the cmd window)
+8. The bot will start working as soon as the gameboard is found and will stop after the amount of minutes in the settings file. (If you want to stop it earlier just close the cmd window)
 
 ## Troubleshooting
 
@@ -105,7 +112,7 @@ If you want to use the default (recommended) settings, just skip the rest of thi
 
 ## Higher-or-Lower settings
 The following 2 settings will influence when the bot will stop playing Higher-or-Lower (HL).
-### safeRound (line 13)
+### safeRound (line 16)
 * after this round, the bot will start to "play safe" (= the bot won't continue HL if the odds are too low)
 * value between 1 and 10
 * a value of 1 will make it so the bot always plays safe
@@ -113,7 +120,7 @@ The following 2 settings will influence when the bot will stop playing Higher-or
 
 Recommended value: 7-8 (for longer runs, runtime 60+ minutes), 5-6 (quick wins, useful when you are just short of being able to buy something) or 10 (big wins, runtime 90+ minutes, it could take a while for you to see gains if you get unlucky, but it should be ok in the long run)
 
-### HLBound (line 17)
+### HLBound (line 20)
 * this is the value used to determine whether the odds are too low or not, it is only used when "playing safe"
 * the bot will continue playing HL only if the absolute difference between the current card and 8 is HIGHER than the HLBound value
 * example: HLBound=1: the bot will stop if the next card is 7,8,9. for HLBound=2: the bot will stop if the next card is 6,7,8,9,10.
@@ -137,18 +144,18 @@ WARNING: changing these values may cause the bot to not work properly and desync
 
 All values are in ms (millisecond).
 
-### delayNormal (line 26)
+### delayNormal (line 29)
 * this is the delay while picking what cards to keep / dealing hand
 
 Recommended value: 3000
 
-### delayHL (line 29)
+### delayHL (line 32)
 * this is the delay during the Higher-or-Lower segment
 * animations during these segments are shorter, the delay used should be delayNormal-500
 
 Recommended value: 2500
 
-### clickDelay (line 32)
+### clickDelay (line 35)
 * How long it takes to move the cursor from one point to another
 * The randomized value added to this delay is 0-250ms
 * WARNING: don't set this value TOO low, the bot will try to click too fast and some of the clicks might not register. It may also trigger some detection flags if you do too many actions in a short period of time.
@@ -157,7 +164,7 @@ Recommended value: 150-200.
 
 ## Other settings
 ### Sound warning
-When the bot stops working (something blocks the gameboard / captcha shows up), a warning sound will play. You can change the warning sound in the settings (line 38).
+When the bot stops working (something blocks the gameboard / captcha shows up), a warning sound will play. You can change the warning sound in the settings (line 41).
 These are the current available sounds:
 1. Lyria singing
 2. Ifrit screaming
@@ -169,7 +176,3 @@ You can test this out by blocking the gameboard for a few seconds while the bot 
 There may be some bugs left that I overlooked, if you notice anything weird while the bot is running let me know by making an issue (https://github.com/tsuntsuntsuntsun/Pokerbot/issues).
 
 You can also message me on discord if you have any questions or need help getting the bot to work, my id is tsun\#3515
-
-For people feeling generous, you can donate here
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N6YUUYVD4A32Y)
