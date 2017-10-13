@@ -153,28 +153,28 @@ public class Bot implements Runnable {
     medium = true;
 
     init();
+    initCards();
     System.out.println(start);
-    clickFast(start);
+    // clickFast(start);
     //identifyStage1();
-  //  System.out.println(newStage);
+    //  System.out.println(newStage);
     //initCards();
     while (true) {
       System.out.println("PRES ENTER");
       Scanner scanner = new Scanner(System.in);
       scanner.nextLine();
       currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-      identifyStage1();
-      System.out.println(newStage);
-      /*identifyCardsMed();
+      //identifyStage1();
+      //System.out.println(newStage);
+      identifyCardsMed();
       for (Card card : cards) {
         System.out.println(card);
-      }*/
+      }
     }
 
   }
 
   public void run() {
-    medium=true;
     try {
       init();
       if (start != null) {
@@ -377,10 +377,9 @@ public class Bot implements Runnable {
   private void init() throws AWTException, IOException, InterruptedException {
     System.out.println("############LOADING ASSETS");
     BufferedImage gameboard = null;
-
+    String sizeString = (medium) ? "medium" : "large";
     //load base picture and icons
     try {
-
       //load card icons
       if (medium) {
         System.out.println("Using MEDIUM settings");
@@ -430,21 +429,20 @@ public class Bot implements Runnable {
       }
 
       //stage icons
-      String size = (medium) ? "medium" : "large";
-      BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/dealIcon.png"));
-      BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/selectIcon.png"));
-      BufferedImage winIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/winIcon.png"));
-      BufferedImage loseIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/loseIcon.png"));
-      BufferedImage selectHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/selectHLIcon.png"));
-      BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/winHLIcon.png"));
-      BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/stage/loseHLIcon.png"));
+      BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/dealIcon.png"));
+      BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/selectIcon.png"));
+      BufferedImage winIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/winIcon.png"));
+      BufferedImage loseIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/loseIcon.png"));
+      BufferedImage selectHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/selectHLIcon.png"));
+      BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/winHLIcon.png"));
+      BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/loseHLIcon.png"));
 
       stageIcons1 = new BufferedImage[]{selectIcon, winIcon, loseIcon, dealIcon};
       stageIcons2 = new BufferedImage[]{selectHLIcon, winHLIcon, loseHLIcon};
       System.out.println("############FINISHED LOADING");
 
       //gameboard hook
-      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/" + size + "/gameboard.png"));
+      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/gameboard.png"));
 
 
     } catch (IOException e) {
@@ -453,6 +451,7 @@ public class Bot implements Runnable {
 
     System.out.println();
     System.out.println("The bot is set to run for " + runtime + " MINUTES");
+    System.out.println("Currently using "+sizeString+" settings");
     System.out.println("This can be changed in the settings.txt file");
     Scanner scanner = new Scanner(System.in);
 
@@ -506,7 +505,7 @@ public class Bot implements Runnable {
     if (medium) {
       stageLoc = new Loc(start, new Loc(167, -233));
       stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 150, 100);
-    } else    {
+    } else {
       stageLoc = new Loc(start, new Loc(285, 270));
       stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 80, 50);
     }
@@ -527,12 +526,12 @@ public class Bot implements Runnable {
     if (medium) {
       stageLoc = new Loc(start, new Loc(151, -273));
       stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 150, 150);
-    } else    {
+    } else {
       stageLoc = new Loc(start, new Loc(270, 220));
       stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
     }
     //Loc stageLoc = new Loc(start, new Loc(270, 220));
-   // BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
+    // BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
     for (int i = 0; i < stageIcons2.length; i++) {
       Loc r = findMatches(stageIcon, stageIcons2[i], 10, 50);
       if (r != null) {
@@ -641,10 +640,9 @@ public class Bot implements Runnable {
   }
 
   private void identifyCards() {
-    if(medium){
+    if (medium) {
       identifyCardsMed();
-    }
-    else{
+    } else {
       for (Card card : cards) {
         identifySuit(card);
       }
@@ -709,14 +707,13 @@ public class Bot implements Runnable {
     BufferedImage cardNum;
     Loc l;
     int offset;
-    if(medium){
-      offset=147;
+    if (medium) {
+      offset = 147;
       l = new Loc(start, new Loc(95, -193));
-    }else{
-      offset=195;
+    } else {
+      offset = 195;
       l = new Loc(start, new Loc(140, 306));
     }
-
 
     if (first) {
       cardNum = currentSS.getSubimage(l.getX(), l.getY(), 70, 100);

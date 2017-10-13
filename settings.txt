@@ -6,8 +6,8 @@
 runtime=60
 
 ###### GAME SIZE
-### Set this to 0 to use large settings
-medium=false
+### Set this to 0 to use LARGE settings, set it to 1 to use MEDIUM settings
+medium=0
 
 ####### Settings during higher-lower
 
