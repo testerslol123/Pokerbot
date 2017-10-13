@@ -30,6 +30,7 @@ public class Bot implements Runnable {
   private int delayNormal;
   private int delayHL;
   private int sound;
+  private boolean medium;
 
 
   public Bot(Properties properties) {
@@ -41,6 +42,9 @@ public class Bot implements Runnable {
       runtime = 60;
     }
     System.out.println("runtime=" + runtime);
+
+    int med = checkProperty(properties, "medium", 0);
+    medium = !(med == 0);
 
     //delayNormal
     delayNormal = checkProperty(properties, "delayNormal", 3000);
@@ -100,6 +104,7 @@ public class Bot implements Runnable {
   //screenshot being used in current iteration
   private BufferedImage currentSS;
 
+  //Large Settings
   private BufferedImage[] numberImages = new BufferedImage[10];
   private BufferedImage[] bigNumberImages = new BufferedImage[13];
   private BufferedImage[] letterImages = new BufferedImage[3];
@@ -109,6 +114,13 @@ public class Bot implements Runnable {
 
   private Suit[] redSuits = new Suit[]{Suit.HEARTS, Suit.DIAMONDS, Suit.HEARTS, Suit.DIAMONDS};
   private BufferedImage[] redIcons;
+
+  //Medium Settings
+  private BufferedImage[] heartCards = new BufferedImage[13];
+  private BufferedImage[] spadeCards = new BufferedImage[13];
+  private BufferedImage[] diamondCards = new BufferedImage[13];
+  private BufferedImage[] clubCards = new BufferedImage[13];
+
 
   private Loc start;
 
@@ -138,19 +150,28 @@ public class Bot implements Runnable {
   private int lowerThan8 = 0;
 
   public void testSuits() throws AWTException, IOException, InterruptedException {
+    medium = true;
+
     init();
     initCards();
     System.out.println(start);
+    // clickFast(start);
+    //identifyStage1();
+    //  System.out.println(newStage);
+    //initCards();
     while (true) {
       System.out.println("PRES ENTER");
       Scanner scanner = new Scanner(System.in);
       scanner.nextLine();
       currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-      identifyCards();
+      //identifyStage1();
+      //System.out.println(newStage);
+      identifyCardsMed();
       for (Card card : cards) {
         System.out.println(card);
       }
     }
+
   }
 
   public void run() {
@@ -176,6 +197,7 @@ public class Bot implements Runnable {
 
         //main loop
         while (current < end) {
+
           //take screenshot
           currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 
@@ -237,6 +259,7 @@ public class Bot implements Runnable {
           identifyValueHL(true);
         }
         System.out.println("CURRENT CARD = " + currentCard);
+
         if (currentCard == 1) {
           click(rightButton);
         } else if (currentCard < 8) {
@@ -329,6 +352,7 @@ public class Bot implements Runnable {
           System.out.println("Press ENTER to resume the bot");
           Scanner scanner = new Scanner(System.in);
           scanner.nextLine();
+
           otherRepeat = 0;
         }
 
@@ -347,59 +371,79 @@ public class Bot implements Runnable {
     higherThan8 = 0;
   }
 
+  //used for detecting error
   private int otherRepeat = 0;
 
   private void init() throws AWTException, IOException, InterruptedException {
     System.out.println("############LOADING ASSETS");
     BufferedImage gameboard = null;
-
+    String sizeString = (medium) ? "medium" : "large";
     //load base picture and icons
     try {
-      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
-      // System.out.println("LOADING CARD SUIT ICONS");
-      //regular icons
-      BufferedImage spadesIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/spadeIcon.png"));
-      BufferedImage clubsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/clubIcon.png"));
-      BufferedImage heartsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/heartIcon.png"));
-      BufferedImage diamondsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/diamondIcon.png"));
+      //load card icons
+      if (medium) {
+        System.out.println("Using MEDIUM settings");
+        for (int i = 1; i <= 13; i++) {
+          heartCards[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/h/" + i + "h.png"));
+          clubCards[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/c/" + i + "c.png"));
+          diamondCards[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/d/" + i + "d.png"));
+          spadeCards[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/s/" + i + "s.png"));
+        }
+        //big numbers for hl
+        for (int i = 1; i < 14; i++) {
+          bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/medium/bigNumber/" + i + ".png"));
+        }
 
-      //letter icons
-      BufferedImage spadesLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/spadeLetterIcon.png"));
-      BufferedImage clubsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/clubLetterIcon.png"));
-      BufferedImage heartsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/heartLetterIcon.png"));
-      BufferedImage diamondsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/suit/diamondLetterIcon.png"));
+      } else {
 
-      //icons by color
-      blackIcons = new BufferedImage[]{spadesIcon, clubsIcon, spadesLetterIcon, clubsLetterIcon};
-      redIcons = new BufferedImage[]{heartsIcon, diamondsIcon, heartsLetterIcon, diamondsLetterIcon};
+        System.out.println("Using LARGE settings");
 
-      //  System.out.println("LOADING CARD VALUE ICONS");
-      //load small number images
-      for (int i = 1; i < 11; i++) {
-        numberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/number/" + i + "b.png"));
+        //regular icons
+        BufferedImage spadesIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/spadeIcon.png"));
+        BufferedImage clubsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/clubIcon.png"));
+        BufferedImage heartsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/heartIcon.png"));
+        BufferedImage diamondsIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/diamondIcon.png"));
+
+        //letter icons
+        BufferedImage spadesLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/spadeLetterIcon.png"));
+        BufferedImage clubsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/clubLetterIcon.png"));
+        BufferedImage heartsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/heartLetterIcon.png"));
+        BufferedImage diamondsLetterIcon = ImageIO.read(getClass().getClassLoader().getResource("img/large/suit/diamondLetterIcon.png"));
+
+        //icons by color
+        blackIcons = new BufferedImage[]{spadesIcon, clubsIcon, spadesLetterIcon, clubsLetterIcon};
+        redIcons = new BufferedImage[]{heartsIcon, diamondsIcon, heartsLetterIcon, diamondsLetterIcon};
+
+        //load small number images
+        for (int i = 1; i < 11; i++) {
+          numberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/" + i + "b.png"));
+        }
+        letterImages[0] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/jb.png"));
+        letterImages[1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/qb.png"));
+        letterImages[2] = ImageIO.read(getClass().getClassLoader().getResource("img/large/number/kb.png"));
+
+        //big numbers for hl
+        for (int i = 1; i < 14; i++) {
+          bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/large/bigNumber/" + i + ".png"));
+        }
       }
-      letterImages[0] = ImageIO.read(getClass().getClassLoader().getResource("img/number/jb.png"));
-      letterImages[1] = ImageIO.read(getClass().getClassLoader().getResource("img/number/qb.png"));
-      letterImages[2] = ImageIO.read(getClass().getClassLoader().getResource("img/number/kb.png"));
 
-      //big numbers
-      for (int i = 1; i < 14; i++) {
-        bigNumberImages[i - 1] = ImageIO.read(getClass().getClassLoader().getResource("img/bigNumber/" + i + ".png"));
-      }
-
-      //   System.out.println("LOADING STAGE ICONS");
       //stage icons
-      BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/dealIcon.png"));
-      BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/selectIcon.png"));
-      BufferedImage winIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/winIcon.png"));
-      BufferedImage loseIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/loseIcon.png"));
-      BufferedImage selectHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/selectHLIcon.png"));
-      BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/winHLIcon.png"));
-      BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/stage/loseHLIcon.png"));
+      BufferedImage dealIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/dealIcon.png"));
+      BufferedImage selectIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/selectIcon.png"));
+      BufferedImage winIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/winIcon.png"));
+      BufferedImage loseIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/loseIcon.png"));
+      BufferedImage selectHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/selectHLIcon.png"));
+      BufferedImage winHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/winHLIcon.png"));
+      BufferedImage loseHLIcon = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/stage/loseHLIcon.png"));
 
       stageIcons1 = new BufferedImage[]{selectIcon, winIcon, loseIcon, dealIcon};
       stageIcons2 = new BufferedImage[]{selectHLIcon, winHLIcon, loseHLIcon};
       System.out.println("############FINISHED LOADING");
+
+      //gameboard hook
+      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/" + sizeString + "/gameboard.png"));
+
 
     } catch (IOException e) {
       System.out.println("############ERROR WHILE LOADING ASSETS");
@@ -407,6 +451,7 @@ public class Bot implements Runnable {
 
     System.out.println();
     System.out.println("The bot is set to run for " + runtime + " MINUTES");
+    System.out.println("Currently using "+sizeString+" settings");
     System.out.println("This can be changed in the settings.txt file");
     Scanner scanner = new Scanner(System.in);
 
@@ -423,35 +468,47 @@ public class Bot implements Runnable {
       //take ss
       currentSS = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
       //find base pic in screenshot
-      gameboard = ImageIO.read(getClass().getClassLoader().getResource("img/gameboard.png"));
-
       start = findMatches(currentSS, gameboard, 5, 25);
 
       if (start == null) {
         System.out.println("############GAMEBOARD NOT FOUND");
       } else {
         //adjust to old values
-        start.setY(start.getY() - 196);
+        if (!medium) {
+          start.setY(start.getY() - 196);
+        }
+
       }
     }
 
-      //init buttons
+    //init buttons
+    if (medium) {
+      centerButton = new Loc(start, new Loc(226, 111));
+      leftButton = new Loc(start, new Loc(153, 109));
+      rightButton = new Loc(start, new Loc(300, 109));
+    } else {
       centerButton = new Loc(start, new Loc(324, 726));
       leftButton = new Loc(start, new Loc(240, 726));
       rightButton = new Loc(start, new Loc(400, 726));
-
-
     }
+  }
 
-    //diff with 8
-
+  //diff with 8
   private int valueDiff(int a) {
     return Math.abs(a - 8);
   }
 
+  //identify stage outside of hl
   private void identifyStage1() throws AWTException {
-    Loc stageLoc = new Loc(start, new Loc(285, 270));
-    BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 80, 50);
+    Loc stageLoc;
+    BufferedImage stageIcon;
+    if (medium) {
+      stageLoc = new Loc(start, new Loc(167, -233));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 150, 100);
+    } else {
+      stageLoc = new Loc(start, new Loc(285, 270));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 80, 50);
+    }
     for (int i = 0; i < stageIcons1.length; i++) {
       Loc r = findMatches(stageIcon, stageIcons1[i], 10, 50);
       if (r != null) {
@@ -462,9 +519,19 @@ public class Bot implements Runnable {
     newStage = Stage.OTHER;
   }
 
+  //identify stage during hl
   private void identifyStage2() throws AWTException {
-    Loc stageLoc = new Loc(start, new Loc(270, 220));
-    BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
+    Loc stageLoc;
+    BufferedImage stageIcon;
+    if (medium) {
+      stageLoc = new Loc(start, new Loc(151, -273));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 150, 150);
+    } else {
+      stageLoc = new Loc(start, new Loc(270, 220));
+      stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
+    }
+    //Loc stageLoc = new Loc(start, new Loc(270, 220));
+    // BufferedImage stageIcon = currentSS.getSubimage(stageLoc.getX(), stageLoc.getY(), 100, 70);
     for (int i = 0; i < stageIcons2.length; i++) {
       Loc r = findMatches(stageIcon, stageIcons2[i], 10, 50);
       if (r != null) {
@@ -483,13 +550,17 @@ public class Bot implements Runnable {
     }
   }
 
-
   //initialize values for the 5 cards in hand
   private void initCards() throws AWTException {
 
-    int baseY = 412;
     int baseX = 38;
+    int baseY = 412;
     int cardDistance = 112;
+    if (medium) {
+      baseX = 15;
+      baseY = -151;
+      cardDistance = 84;
+    }
 
     cards = new ArrayList<>();
     Card card1 = new Card(1, new Loc(start, new Loc(baseX, baseY)));
@@ -505,12 +576,80 @@ public class Bot implements Runnable {
     cards.add(card5);
   }
 
-  private void identifyCards() {
+  private void identifyCardsMed() {
     for (Card card : cards) {
-      identifySuit(card);
+      BufferedImage cardNum = currentSS.getSubimage(card.getLocation().getX(), card.getLocation().getY(), 40, 50);
+      boolean found = false;
+      if (isBlack(cardNum)) {
+        //spade
+        for (int i = 0; i < 13; i++) {
+          Loc r = findMatches(cardNum, spadeCards[i], 15, 50);
+          if (r != null) {
+            card.setValue(i + 1);
+            card.setSuit(Suit.SPADES);
+            found = true;
+            break;
+          }
+        }
+        if (found) {
+          continue;
+        }
+        //club
+        for (int i = 0; i < 13; i++) {
+          Loc r = findMatches(cardNum, clubCards[i], 15, 50);
+          if (r != null) {
+            card.setValue(i + 1);
+            card.setSuit(Suit.CLUBS);
+            found = true;
+            break;
+          }
+        }
+        if (found) {
+          continue;
+        }
+        //joker
+        card.setValue(-1);
+        card.setSuit(Suit.JOKER);
+      } else {
+        //heart
+        for (int i = 0; i < 13; i++) {
+          Loc r = findMatches(cardNum, heartCards[i], 15, 50);
+          if (r != null) {
+            card.setValue(i + 1);
+            card.setSuit(Suit.HEARTS);
+            break;
+          }
+        }
+        if (found) {
+          continue;
+        }
+        //dia
+        for (int i = 0; i < 13; i++) {
+          Loc r = findMatches(cardNum, diamondCards[i], 15, 50);
+          if (r != null) {
+            card.setValue(i + 1);
+            card.setSuit(Suit.DIAMONDS);
+            break;
+          }
+        }
+      }
+      if (card.getValue() == 0) {
+        System.out.println("not found number for card " + card.getOrder());
+      }
     }
   }
 
+  private void identifyCards() {
+    if (medium) {
+      identifyCardsMed();
+    } else {
+      for (Card card : cards) {
+        identifySuit(card);
+      }
+    }
+  }
+
+  //used for large settings
   private void identifySuit(Card card) {
     //subimage of card suit icon
     BufferedImage cardIcon = currentSS.getSubimage(card.getLocation().getX(), card.getLocation().getY(), 25, 25);
@@ -546,6 +685,7 @@ public class Bot implements Runnable {
     }
   }
 
+  //used for large settings
   //identifies the value of cards outside of HL
   //offset is 10 for letter cards, 1 for numbers
   private void identifyValue(Card card, BufferedImage[] images, int offset) {
@@ -565,11 +705,20 @@ public class Bot implements Runnable {
   //if first is true, looks at the left card, otherwise looks at the right card
   private void identifyValueHL(boolean first) {
     BufferedImage cardNum;
-    Loc l = new Loc(start, new Loc(140, 306));
+    Loc l;
+    int offset;
+    if (medium) {
+      offset = 147;
+      l = new Loc(start, new Loc(95, -193));
+    } else {
+      offset = 195;
+      l = new Loc(start, new Loc(140, 306));
+    }
+
     if (first) {
       cardNum = currentSS.getSubimage(l.getX(), l.getY(), 70, 100);
     } else {
-      cardNum = currentSS.getSubimage(l.getX() + 195, l.getY(), 100, 100);
+      cardNum = currentSS.getSubimage(l.getX() + offset, l.getY(), 100, 100);
     }
     for (int i = 0; i < bigNumberImages.length; i++) {
       Loc r = findMatches(cardNum, bigNumberImages[i], 20, 50);
@@ -659,8 +808,8 @@ public class Bot implements Runnable {
   //move mouse to location x,y and click
   //location and speed slightly randomized
   public void click(int x, int y) throws AWTException {
-    x += rand.nextInt(40) - 20;
-    y += rand.nextInt(40) - 20;
+    x += rand.nextInt(30) - 15;
+    y += rand.nextInt(30) - 15;
 
     PointerInfo a = MouseInfo.getPointerInfo();
     Point b = a.getLocation();

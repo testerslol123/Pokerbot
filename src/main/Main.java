@@ -37,6 +37,7 @@ public class Main {
       }
     }
 
+   // new Thread(new Bot(properties)).start();
     new Thread(new Bot(properties)).start();
   }
 }
